@@ -9,6 +9,8 @@ public class DiceGame {
     private final List<Die> dice;
     private final int maxRolls;
     private Player currentPlayer;
+    // Adding variable for betting
+    private int pot;
 
     public DiceGame(int countPlayers, int countDice, int maxRolls) {
 
@@ -83,19 +85,23 @@ public class DiceGame {
         return winner.toString();
     }
 
+    // Updated to calculate game results and betting outcomes
     public String getGameResults() {
 
         players.sort(Comparator.comparingInt(Player::getScore).reversed());
 
-        int topScore = players.get(0).getScore();
+        Player winner = players.get(0);
 
         players.forEach(p -> {
-            if (p.getScore() == topScore) {
+            if (p == winner) {
                 p.addWin();
+                p.winBet(pot);
             } else {
                 p.addLoss();
             }
         });
+
+        pot = 0;
 
         return players.stream()
                 .map(Player::toString)
@@ -154,5 +160,16 @@ public class DiceGame {
     public void startNewGame() {
         currentPlayer = players.get(0);
         resetPlayers();
+    }
+
+    // Method for collecting bets
+    public void collectBet(int amount) {
+        currentPlayer.placeBet(amount);
+        pot += amount;
+    }
+
+    // Method for getting current player's money for betting phase
+    public int getCurrentPlayerMoney() {
+        return currentPlayer.getMoney();
     }
 }

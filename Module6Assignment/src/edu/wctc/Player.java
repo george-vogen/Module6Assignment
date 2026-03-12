@@ -9,6 +9,9 @@ public class Player {
     private int countLoss;
     private int score;
     private int rollsUsed;
+    // Adding variables for betting
+    private int money = 100;
+    private int bet;
 
     public Player() {
         playerNum = nextPlayerNum++;
@@ -51,8 +54,34 @@ public class Player {
         rollsUsed++;
     }
 
+    // Methods for betting
+    public int getMoney() {
+        return money;
+    }
+
+    public void placeBet(int amount) {
+
+        if (amount > money) {
+            throw new IllegalArgumentException("Not enough money.");
+        }
+
+        bet = amount;
+        money -= amount;
+    }
+
+    public void winBet(int pot) {
+        money += pot;
+    }
+
+    public void loseBet() {
+        money -= bet;
+    }
+
+    // Updated toString to include betting info
     public String toString() {
-        return String.format("Player %d: %d (Won: %d, Lost: %d)",
-                playerNum, score, countWin, countLoss);
+        return String.format(
+                "Player %d: Score %d | Money %d | (Won: %d, Lost: %d)",
+                playerNum, score, money, countWin, countLoss
+        );
     }
 }

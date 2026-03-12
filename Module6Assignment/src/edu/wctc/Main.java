@@ -50,6 +50,16 @@ public class Main {
             // reset the dice for new player
             game.resetDice();
 
+            // Betting phase
+            System.out.printf("Player %d money: %d%n",
+                    game.getCurrentPlayerNumber(),
+                    game.getCurrentPlayerMoney());
+
+            System.out.print("Place your bet: ");
+            int bet = Integer.parseInt(keyboard.nextLine());
+
+            game.collectBet(bet);
+
             // while current player can continue
             while (game.currentPlayerCanRoll()) {
                 // roll any unheld dice
